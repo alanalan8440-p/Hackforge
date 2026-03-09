@@ -1,11 +1,21 @@
-import { getRoadmap } from "../services/roadmap.service.js";
+export const generateRoadmap = async (req, res) => {
+  try {
 
-export const roadmap = async (req,res)=>{
+    const { course } = req.body;
 
-const goal = req.params.goal;
+    const roadmap = [
+      "Learn Basics",
+      "Practice Projects",
+      "Internships",
+      "Advanced Concepts"
+    ];
 
-const path = await getRoadmap(goal);
+    res.json({
+      message: "Roadmap generated",
+      roadmap
+    });
 
-res.json(path);
-
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
