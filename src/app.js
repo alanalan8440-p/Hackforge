@@ -13,6 +13,10 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 
+app.get("/", (req,res)=>{
+  res.send("Career Course Matching API is running 🚀");
+});
+
 app.use("/api/courses", courseRoutes);
 app.use("/api/colleges", collegeRoutes);
 app.use("/api/roadmap", roadmapRoutes);
