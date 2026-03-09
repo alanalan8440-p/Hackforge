@@ -19,7 +19,16 @@ export const getCourses = async (req, res) => {
 export const addCourse = async (req, res) => {
   try {
 
-    const { course_id, course_name, domain, duration, difficulty, required_skills, career_paths, average_salary } = req.body;
+    const {
+      course_id,
+      course_name,
+      domain,
+      duration,
+      difficulty,
+      required_skills,
+      career_paths,
+      average_salary
+    } = req.body;
 
     const { data, error } = await supabase
       .from("courses")
@@ -34,7 +43,8 @@ export const addCourse = async (req, res) => {
           career_paths,
           average_salary
         }
-      ]);
+      ])
+      .select();
 
     if (error) throw error;
 
