@@ -1,12 +1,15 @@
+import supabase from "../config/supabase.js";
+
 export const getCourses = async (req, res) => {
   try {
-    const courses = [
-      { id: 1, name: "B.Tech Computer Science", category: "Engineering", duration: "4 years" },
-      { id: 2, name: "MBBS", category: "Medical", duration: "5.5 years" },
-      { id: 3, name: "BBA", category: "Commerce", duration: "3 years" }
-    ];
 
-    res.json(courses);
+    const { data, error } = await supabase
+      .from("courses")
+      .select("*");
+
+    if (error) throw error;
+
+    res.json(data);
 
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -15,11 +18,29 @@ export const getCourses = async (req, res) => {
 
 export const addCourse = async (req, res) => {
   try {
-    const { name, category, duration } = req.body;
+
+    const { course_id, course_name, domain, duration, difficulty, required_skills, career_paths, average_salary } = req.body;
+
+    const { data, error } = await supabase
+      .from("courses")
+      .insert([
+        {
+          course_id,
+          course_name,
+          domain,
+          duration,
+          difficulty,
+          required_skills,
+          career_paths,
+          average_salary
+        }
+      ]);
+
+    if (error) throw error;
 
     res.json({
       message: "Course added successfully",
-      course: { name, category, duration }
+      data
     });
 
   } catch (error) {
@@ -29,21 +50,18 @@ export const addCourse = async (req, res) => {
 
 export const analyzeProfile = async (req, res) => {
   try {
-    const { interests, marks } = req.body;
 
-    let recommended = [];
+    const { interests } = req.body;
 
-    if (interests.includes("coding")) {
-      recommended.push("B.Tech Computer Science");
-    }
+    const { data, error } = await supabase
+      .from("courses")
+      .select("*");
 
-    if (interests.includes("biology")) {
-      recommended.push("MBBS");
-    }
+    if (error) throw error;
 
-    if (marks > 80) {
-      recommended.push("Engineering");
-    }
+    const recommended = data.filter(course =>
+      interests.includes(course.domain.toLowerCase())
+    );
 
     res.json({
       message: "Profile analyzed",
