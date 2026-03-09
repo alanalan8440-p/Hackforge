@@ -4,10 +4,10 @@ export const generateRoadmap = async (req, res) => {
     const { course } = req.body;
 
     const roadmap = [
-      "Learn Basics",
-      "Practice Projects",
-      "Internships",
-      "Advanced Concepts"
+      "Learn fundamentals",
+      "Build projects",
+      "Complete internships",
+      "Master advanced topics"
     ];
 
     res.json({
